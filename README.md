@@ -105,8 +105,7 @@ Garanta que, ao limpar a lista, o ponteiro `ultimo` também seja resetado para `
 Reescreva a função `inserirElemento` para usar a lógica O(1).
 
 1.  A lógica de alocação do `novo` nó permanece a mesma.
-2.  Verifique se o valor já existe (reaproveitando a lógica da Tarefa 1 da atividade anterior).
-3.  Implemente a nova lógica de inserção:
+2.  Implemente a nova lógica de inserção:
       * **Se a lista está vazia (`primeiro == NULL`)**:
           * `primeiro` recebe `novo`.
           * `ultimo` também recebe `novo`.
