@@ -70,7 +70,7 @@ void menu()
 
 void inicializar()
 {
-	// se a lista já possuir elementos
+	// se a lista jÃ¡ possuir elementos
 // libera a memoria ocupada
 	NO* aux = primeiro;
 	while (aux != NULL) {
@@ -125,29 +125,88 @@ void inserirElemento()
 	cin >> novo->valor;
 	novo->prox = NULL;
 
-	if (primeiro == NULL)
+	// procura a posicao correta para manter a lista ordenada
+	NO* atual = primeiro;
+	NO* anterior = NULL;
+	while (atual != NULL && atual->valor < novo->valor) {
+		anterior = atual;
+		atual = atual->prox;
+	}
+
+	// nao permite valores duplicados
+	if (atual != NULL && atual->valor == novo->valor) {
+		cout << "Elemento ja existe na lista \n";
+		free(novo);
+		return;
+	}
+
+	if (anterior == NULL)
 	{
+		// lista vazia ou novo elemento deve ser o primeiro
 		primeiro = novo;
 	}
 	else
 	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
-		}
-		aux->prox = novo;
+		// insere no meio ou no fim
+		anterior->prox = novo;
 	}
+	novo->prox = atual;
 }
 
 void excluirElemento()
 {
+	int numero;
+	cout << "Digite o elemento a ser excluido: ";
+	cin >> numero;
 
+	NO* atual = primeiro;
+	NO* anterior = NULL;
+	while (atual != NULL && atual->valor < numero) {
+		anterior = atual;
+		atual = atual->prox;
+	}
+
+	// chegou ao fim da lista ou passou do ponto onde o numero deveria estar
+	if (atual == NULL || atual->valor > numero) {
+		cout << "ELEMENTO NAO ENCONTRADO \n";
+		return;
+	}
+
+	if (anterior == NULL)
+	{
+		// o elemento e o primeiro
+		primeiro = atual->prox;
+	}
+	else
+	{
+		// o elemento esta no meio ou no fim
+		anterior->prox = atual->prox;
+	}
+
+	free(atual);
+	cout << "Elemento excluido \n";
 }
 
 void buscarElemento()
 {
+	int numero;
+	cout << "Digite o elemento a ser buscado: ";
+	cin >> numero;
 
+	NO* aux = primeiro;
+	while (aux != NULL) {
+		if (aux->valor == numero) {
+			cout << "ENCONTRADO \n";
+			return;
+		}
+		if (aux->valor > numero) {
+			// ja passou do ponto onde o numero deveria estar
+			cout << "ELEMENTO NAO ENCONTRADO \n";
+			return;
+		}
+		aux = aux->prox;
+	}
+
+	// chegou ao fim da lista sem encontrar
+	cout << "ELEMENTO NAO ENCONTRADO \n";
 }
-
-
