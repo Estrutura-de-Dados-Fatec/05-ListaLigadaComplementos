@@ -8,6 +8,7 @@ struct NO {
 };
 
 NO* primeiro = NULL;
+NO* ultimo = NULL;
 
 // headers
 void menu();
@@ -69,7 +70,7 @@ void menu()
 
 void inicializar()
 {
-	// se a lista j· possuir elementos
+	// se a lista j√° possuir elementos
 // libera a memoria ocupada
 	NO* aux = primeiro;
 	while (aux != NULL) {
@@ -79,6 +80,7 @@ void inicializar()
 	}
 
 	primeiro = NULL;
+	ultimo = NULL;
 	cout << "Lista inicializada \n";
 
 }
@@ -127,26 +129,82 @@ void inserirElemento()
 	if (primeiro == NULL)
 	{
 		primeiro = novo;
+		ultimo = novo;
 	}
 	else
 	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
-		}
-		aux->prox = novo;
+		ultimo->prox = novo;
+		ultimo = novo;
 	}
 }
 
 void excluirElemento()
 {
+	if (primeiro == NULL) {
+		cout << "Lista vazia \n";
+		return;
+	}
 
+	int numero;
+	cout << "Digite o elemento a ser excluido: ";
+	cin >> numero;
+
+	// procura o no, guardando o anterior
+	NO* anterior = NULL;
+	NO* atual = primeiro;
+	while (atual != NULL && atual->valor != numero) {
+		anterior = atual;
+		atual = atual->prox;
+	}
+
+	if (atual == NULL) {
+		cout << "Elemento nao encontrado \n";
+		return;
+	}
+
+	if (atual == primeiro) {
+		primeiro = atual->prox;
+		if (atual == ultimo) {
+			// era o unico elemento
+			ultimo = NULL;
+		}
+	}
+	else {
+		anterior->prox = atual->prox;
+		if (atual == ultimo) {
+			// o penultimo passa a ser o ultimo
+			ultimo = anterior;
+		}
+	}
+
+	free(atual);
+	cout << "Elemento excluido \n";
 }
 
 void buscarElemento()
 {
+	int numero;
+	cout << "Digite o elemento a ser buscado: ";
+	cin >> numero;
 
+	NO* pos = posicaoElemento(numero);
+	if (pos == NULL) {
+		cout << "Elemento nao encontrado \n";
+	}
+	else {
+		cout << "Elemento encontrado: " << pos->valor << endl;
+	}
 }
 
-
+// retorna o ponteiro para o no que contem o valor, ou NULL se nao existir
+NO* posicaoElemento(int numero)
+{
+	NO* aux = primeiro;
+	while (aux != NULL) {
+		if (aux->valor == numero) {
+			return aux;
+		}
+		aux = aux->prox;
+	}
+	return NULL;
+}
